@@ -84,7 +84,7 @@ public:
   /** \brief Constructs a NNLS sovler and initializes it with the given system matrix @c A.
    * \param A Specifies the system matrix.
    * \param max_iter Specifies the maximum number of iterations to solve the system, if
-   *        @c max_iter<0 tere is no limit and the algorithm will only return on convergence.
+   *        @c max_iter<0 there is no limit and the algorithm will only return on convergence.
    * \param eps Specifies the precision of the optimum. */
   NNLS(const MatrixType &A, int max_iter=-1, Scalar eps=1e-10)
     : _max_iter(max_iter), _num_ls(0), _epsilon(eps),
@@ -106,12 +106,12 @@ public:
    * by the @c x method. */
   bool solve(const ColVectorType &b, Heuristic heuristic=MAX_DESCENT);
 
-  /** \brief Retruns the solution if a problem was solved.
+  /** \brief Returns the solution if a problem was solved.
    * If not, an uninitialized vector may be returned. */
   inline const RowVectorType &x() const { return _x; }
 
   /** \brief Returns the hat-matrix mapping \f$b\f$ to the coefficients \f$x\f$ as \f$x = H b\f$
-   * such that \f$x\f$ minimizes.
+   * such that \f$x\f$ minimizes NNLS problem.
    * Please note that in constrast to unconstrained LS, the hat matrix does not necessarily imply
    * that \f$x_2 = Hb_2\f$ minimizes \left\Vert A x_2 - b_2\right\Vert_2\f$ if \f$x_1 = Hb_2\f$
    * minimizes \left\Vert A x_2 - b_2\right\Vert_2\f$. This means, that the hat matrix does not
@@ -134,8 +134,7 @@ public:
     return true;
   }
 
-  /** \brief This method checks if the Karush-Kuhn-Tucker (KKT) conditions are satisfied by the
-   * calculated solution. */
+  /** \brief This method checks if the Karush-Kuhn-Tucker (KKT) conditions are satisfied by the solution. */
   bool check(const ColVectorType &b);
 
 protected:
