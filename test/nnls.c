@@ -1,8 +1,3 @@
-/* $Id: nnls.c,v 1.7 2000/11/07 16:29:30 tgkolda Exp $ */
-/* $Source: /usr/local/cvsroot/appspack/apps/src/nnls.c,v $ */
-
-/* Distributed with ASYNCHRONOUS PARALLEL PATTERN SEARCH (APPS) */
-
 /* The routines in this file have been translated from Fortran to C by
    f2c. Additional modifications have been made to remove the
    dependencies on the f2c header file and library. The original

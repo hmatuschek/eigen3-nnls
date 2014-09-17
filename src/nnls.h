@@ -26,6 +26,7 @@
 #ifndef __EIGEN_NNLS_H__
 #define __EIGEN_NNLS_H__
 
+#include <limits>
 
 namespace Eigen {
 
@@ -91,6 +92,9 @@ public:
       _x(_A.cols()), _w(_A.cols()), _y(_A.cols()),
       _P(_A.cols()), _QR(_A.rows(), _A.cols()), _qrCoeffs(_A.cols()), _tempVector(_A.cols())
   {
+    // Ensure Scalar type is real.
+    EIGEN_STATIC_ASSERT(!NumTraits<Scalar>::IsComplex, NUMERIC_TYPE_MUST_BE_REAL);
+
     // Precompute A^T*A
     _AtA = A.transpose() * A;
   }
