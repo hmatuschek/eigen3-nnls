@@ -328,7 +328,7 @@ bool NNLS<MatrixType>::solve(const ColVectorType &b, Heuristic heuristic)
     _updateGradient();
 
     // Check if system is solved:
-    if ((_A.cols()==_Np) || (_max_Z(_w)-_epsilon<0)) { return true; }
+    if ((_A.cols()==_Np) || ((_max_Z(_w)-_epsilon)<0)) { return true; }
 
     switch (heuristic) {
     // find index of max descent and add it to P
