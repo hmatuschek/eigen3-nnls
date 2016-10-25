@@ -28,9 +28,7 @@ namespace Eigen {
 		for(int j=0; j<p; j++)
 		{
 			for(int i=0; i<m; i++)
-			{
 				b(i) = mpb[i*p+j];
-			}
 
 			NNLS<MatrixType> nnls(A, 30, eps);
 
@@ -65,27 +63,17 @@ namespace Eigen {
 		for(int i=0; i<m; i++)
 		{
 			for(int j=0; j<n; j++)
-			{
 				A(i,j) = mna[i*n+j];
-			}
 
 			for(int j=0; j<p; j++)
-			{
 				b(i,j) = mpb[i*p+j];
-			}
-
 		}
 
 		MatrixType res = A.jacobiSvd(ComputeThinU | ComputeThinV).solve(b) ;
 
-		std::cout << "The least-squares solution is:\n"
-			<< res << std::endl;
-
-
 		for(int i=0; i<n; i++)
 			for(int j=0; j<p; j++)
 				npx[i*p+j] = res(i,j);
-
 
 		return true;
 	}
