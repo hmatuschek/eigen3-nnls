@@ -1,6 +1,6 @@
 /* Non-Negagive Least Squares Algorithm for Eigen.
  *
- * Copyright (C) 2013 Hannes Matuschek, hmatuschek at uni-potsdam.de
+ * Copyright (C) 2013 Hannes Matuschek, hannes.matuschek at uni-potsdam.de
  *
  * This Source Code Form is subject to the terms of the Mozilla
  * Public License v. 2.0. If a copy of the MPL was not distributed
@@ -41,7 +41,7 @@ namespace Eigen {
  *
  * \f[ \min \left\Vert Ax-b\right\Vert_2^2\quad s.t.\, x\ge 0 \f]
  *
- * \note Please note that it is possible to construct a NNLS problem for which the algorithm does
+ * \note Please note that it is possible to construct an NNLS problem for which the algorithm does
  *       not converge. In "nature" these cases are extremely rare. However, you can specify the
  *       maximum number of iterations with the constructor to avoid endless loops.
  * \todo Restrict the scalar type to real floating point types. */
@@ -328,20 +328,22 @@ bool NNLS<MatrixType>::solve(const ColVectorType &b, Heuristic heuristic)
     _updateGradient();
 
     // Check if system is solved:
-    if ((_A.cols()==_Np) || ((_max_Z(_w)-_epsilon)<0)) { return true; }
+    if ((_A.cols()==_Np) || ((_max_Z(_w)-_epsilon)<0))
+      return true;
 
     switch (heuristic) {
     // find index of max descent and add it to P
-    case MAX_DESCENT: _addToP(_argmax_Z(_w)); break;
+    case MAX_DESCENT:
+        _addToP(_argmax_Z(_w));
+        break;
     }
 
     // INNER LOOP
     while (true)
     {
       // Check if max. number of iterations is reached
-      if ( (0 < _max_iter) && (int(_num_ls) >= _max_iter) ) {
+      if ( (0 < _max_iter) && (int(_num_ls) >= _max_iter) )
         return false;
-      }
 
       // Solve LS problem in P only, this step is rather trivial as _addToP & _remFromP
       // updates the QR decomposition of A^P.
@@ -352,14 +354,22 @@ bool NNLS<MatrixType>::solve(const ColVectorType &b, Heuristic heuristic)
       Scalar alpha = std::numeric_limits<Scalar>::max(); Index remIdx;
       for (Index i=0; i<_Np; i++) {
         Index idx = _P.indices()(i);
-        if (_y(idx) <= 0) {
+        if (_y(idx) < 0) {
+          // t shoudl always be in [0,1].
           Scalar t = -_x(idx)/(_y(idx)-_x(idx));
-          if (alpha > t) { alpha = t; remIdx = i; }
-          feasable=false;
+          if (alpha > t) {
+            alpha = t;
+            remIdx = i;
+            feasable = false;
+          }
         }
       }
+
       // If solution is feasable, exit to outer loop
-      if (feasable) { _x = _y; break; }
+      if (feasable) {
+        _x = _y;
+        break;
+      }
 
       // Infeasable solution -> interpolate to feasable one
       for (Index i=0; i<_Np; i++) {
